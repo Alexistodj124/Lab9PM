@@ -85,11 +85,3 @@ fun MealsCategoriesScreen(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    EventZezziAppTheme {
-        MealsCategoriesScreen(navController = rememberNavController())
-    }
-}
