@@ -10,3 +10,11 @@ data class MealResponse(
     @SerializedName("strCategoryDescription") val description: String,
     @SerializedName("strCategoryThumb") val imageUrl: String
 )
+
+data class MealsResponse(val meals: List<Meals>)
+
+data class Meals(
+    @SerializedName("strMeal") val name: String,
+    @SerializedName("strMealThumb") val imageUrl: String,
+    @SerializedName("idMeal") val id: String
+)

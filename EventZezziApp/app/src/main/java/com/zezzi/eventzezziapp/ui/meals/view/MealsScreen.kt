@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -28,22 +28,23 @@ import coil.compose.AsyncImage
 import com.zezzi.eventzezziapp.navigation.AppBar
 import com.zezzi.eventzezziapp.navigation.NavigationState
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MealsCategoriesScreen(
+fun MealsScreen(
     navController: NavController,
+    category: String,
     viewModel: MealsCategoriesViewModel = viewModel()
 ) {
-    if (viewModel.categoryUiState.categories.isEmpty()) {
-        viewModel.getMeals()
+    if (viewModel.mealsUiState.meals.isEmpty()) {
+        viewModel.getMealsByCategory()
     }
 
     Scaffold(
         topBar = {
-            AppBar(title = "Categories", navController = navController)
+            AppBar(title = "Meals for $category", navController = navController)
         }
     ) {
-        if (viewModel.categoryUiState.loading) {
+        if (viewModel.mealsUiState.loading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -58,19 +59,14 @@ fun MealsCategoriesScreen(
                 columns = GridCells.Fixed(2),
                 contentPadding = it,
             ) {
-                items(viewModel.categoryUiState.categories) { meal ->
+                items(viewModel.mealsUiState.meals) { meal ->
                     Card(
                         shape = RoundedCornerShape(8.dp),
-                        elevation = 2.dp,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),
-                        onClick = {
-                            navController.navigate("${NavigationState.Meals.route}/${meal.name}")
-                        }
                     ) {
                         Column(
-
                             modifier = Modifier
                                 .padding(16.dp)
                                 .fillMaxWidth(),
@@ -94,3 +90,4 @@ fun MealsCategoriesScreen(
         }
     }
 }
+
